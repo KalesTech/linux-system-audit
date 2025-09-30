@@ -1,33 +1,25 @@
 #!/bin/bash
-#
 # Linux System Audit Script
 # Collects hardware, software, and network configuration details
 # Saves results in a timestamped folder + compressed archive
-#
 
 # ───────────────────────────────
-# Config
+# Config (May tweak later for folder location outputs line 10,11) 
 # ───────────────────────────────
+
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 INFO_DIR=~/EndeavourOS-Audit/$TIMESTAMP
 LOG_FILE="$INFO_DIR/audit.log"
 
 # ───────────────────────────────
-# Helpers
+# Helpers: Output & Logging Utilities
 # ───────────────────────────────
+
 mkdir -p "$INFO_DIR"
 
-log() {
-    echo -e "[$(date +"%H:%M:%S")] $1" | tee -a "$LOG_FILE"
-}
-
-success() {
-    echo -e "\e[32m[✓] $1\e[0m" | tee -a "$LOG_FILE"
-}
-
-error() {
-    echo -e "\e[31m[✗] $1\e[0m" | tee -a "$LOG_FILE"
-}
+log() {echo -e "[$(date +"%H:%M:%S")] $1" | tee -a "$LOG_FILE"}
+success() {echo -e "\e[32m[✓] $1\e[0m" | tee -a "$LOG_FILE"}
+error() {echo -e "\e[31m[✗] $1\e[0m" | tee -a "$LOG_FILE"}
 
 run_cmd() {
     CMD="$1"
@@ -43,8 +35,9 @@ log "Starting Linux system audit..."
 log "Output directory: $INFO_DIR"
 
 # ───────────────────────────────
-# System Information
+# System Information Pull Commands 
 # ───────────────────────────────
+
 run_cmd "neofetch --stdout" "$INFO_DIR/system_info.txt"
 run_cmd "pacman -Qe" "$INFO_DIR/installed_packages.txt"
 run_cmd "yay -Qm || paru -Qm" "$INFO_DIR/aur_packages.txt"
@@ -98,6 +91,7 @@ run_cmd "sudo crontab -l" "$INFO_DIR/root_cron_jobs.txt"
 # ───────────────────────────────
 # README File
 # ───────────────────────────────
+
 cat <<EOF > "$INFO_DIR/README.md"
 # Linux System Audit Report
 
