@@ -19,5 +19,5 @@ Generates timestamped reports that can be used for troubleshooting, documentatio
 
 1. Clone this repo or copy the script:
    ```bash
-   git clone https://github.com/<your-username>/linux-system-audit.git
+   git clone https://github.com/KalesTech/linux-system-audit.git
    cd linux-system-audit
